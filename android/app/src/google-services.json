@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "183870257740",
+    "project_id": "srve-me",
+    "storage_bucket": "srve-me.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183870257740:android:ad86e4013d5e83144ed2e9",
+        "android_client_info": {
+          "package_name": "com.example.srve"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183870257740-kh6ea160gvu6ia8kmun2v09ehcgn5nqr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTPMZviOZ1XzQhn-7FBJqVlip30086uxY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "183870257740-kh6ea160gvu6ia8kmun2v09ehcgn5nqr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "183870257740-r9qrc9gdj39eljkver46d5rp2n494i9l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.srve",
+                "app_store_id": "123456789"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
