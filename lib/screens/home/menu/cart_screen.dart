@@ -3,6 +3,8 @@ import 'package:srve/components/selected_venue_alert.dart';
 import 'package:srve/services/cart.dart';
 import 'package:srve/services/venue_storage.dar.dart';
 
+import '../../../locator.dart';
+
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
 
@@ -52,10 +54,7 @@ class _CartScreen extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
 
-    String? selectedVenue = SelectedVenue().getVenue();
-    int? tableNum = SelectedVenue().getTable();
-
-    if (selectedVenue == null) {
+    if (locator<SelectedVenue>().getVenue() == null) {
       WidgetsBinding.instance?.addPostFrameCallback((_) async {
         await showDialog<String>(
             context: context,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:srve/components/selected_venue_alert.dart';
 import 'package:srve/services/venue_storage.dar.dart';
+import '../locator.dart';
 import 'home/map.dart';
 import 'home/menu.dart';
 import 'home/more.dart';
@@ -50,11 +51,11 @@ class _Home extends State<Home>{
   @override
   Widget build(BuildContext context) {
 
-    if (SelectedVenue().getVenue() == null && currentIndex == 1) {
+    if (locator<SelectedVenue>().getVenue() == null && currentIndex == 1) {
       WidgetsBinding.instance?.addPostFrameCallback((_) async {
         await showDialog<String>(
             context: context,
-            builder: (BuildContext context) => noVenue(context)
+            builder: (BuildContext context) => noTable(context)
         );
         setState(() {
           //(index==3){qrScan(context); index = currentIndex;} ///------///
