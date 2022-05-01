@@ -36,11 +36,11 @@ class SelectedVenue{
   String? venue;
   int? table;
 
-  setVenue (String v) {
+  setVenue (String? v) {
     venue = v;
   }
 
-  setTable (int t) {
+  setTable (int? t) {
     table = t;
   }
 

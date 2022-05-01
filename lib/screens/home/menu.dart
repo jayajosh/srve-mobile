@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:srve/services/themes.dart';
+import 'package:srve/components/venue_storage_alert.dart';
+import 'package:srve/services/venue_storage.dar.dart';
+
+import '../../locator.dart';
 
 class Menu extends StatefulWidget {
   const Menu({Key? key}) : super(key: key);
@@ -28,13 +30,21 @@ class _Menu extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
-    final themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
+
+    if (locator<SelectedVenue>().getTable() == null) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) async {
+        await showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => noTable(context)
+        );
+        setState(() {});
+      });
+    }
 
     CollectionReference venues = FirebaseFirestore.instance.collection('venues');
-    CollectionReference venuesd = FirebaseFirestore.instance.collection('venues').doc('uqgGPJ4RBUXtOHgKkmYg').collection('drinks');
 
     return FutureBuilder<DocumentSnapshot>(
-      future: venues.doc('uqgGPJ4RBUXtOHgKkmYg').get(),
+      future: venues.doc(locator<SelectedVenue>().getVenue()).get(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
@@ -49,7 +59,7 @@ class _Menu extends State<Menu> {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
-              appBar: AppBar(title: Text("${data['name']}"),actions: [IconButton(icon: const Icon(Icons.shopping_cart), onPressed: (){Navigator.pushNamed(context, 'Home/Cart');})]),
+              appBar: AppBar(title: Text("${data['name']} (" + locator<SelectedVenue>().getTable().toString() + ")"),actions: [IconButton(icon: const Icon(Icons.shopping_cart), onPressed: (){Navigator.pushNamed(context, 'Home/Cart');})]),
               body: Column(children: [
                 const Divider(color: Colors.transparent),
                 ItemSetup(Icons.lunch_dining, "Food", (){Navigator.pushNamed(context, 'Home/Food', arguments: data['FoodTypes']);}),
@@ -65,13 +75,4 @@ class _Menu extends State<Menu> {
     );
     //body:
   }
-}
-
-//Widget
-darkModeOptions() {
-  return [
-    PopupMenuItem(value: "system",child: Row(children: const [Padding(padding: EdgeInsets.only(right:10.0), child: Icon(Icons.autorenew)),Text("System")])),
-    PopupMenuItem(value: "dark",child: Row(children: const [Padding(padding: EdgeInsets.only(right:10.0), child: Icon(Icons.nightlight_round)),Text("Dark Mode")])),
-    PopupMenuItem(value: "light",child: Row(children: const [Padding(padding: EdgeInsets.only(right:10.0), child: Icon(Icons.wb_sunny)),Text("Light Mode")]))
-  ];
 }
