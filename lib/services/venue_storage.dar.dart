@@ -53,4 +53,25 @@ class VenueNotifier with ChangeNotifier {
 
 }*/
 
-//todo De Class
+class SelectedVenue{
+
+  String? venue = null;
+  int? table = null;
+
+  setVenue (String v) {
+    venue = v;
+  }
+
+  setTable (int t) {
+    table = t;
+  }
+
+  String? getVenue () {
+    return venue;
+  }
+
+  int? getTable () {
+    return table;
+  }
+
+}

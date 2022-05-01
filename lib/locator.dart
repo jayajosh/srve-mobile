@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:srve/services/venue_storage.dar.dart';
 import 'services/cart.dart';
 import 'services/dynamic_link.dart';
 import 'services/navigation.dart';
@@ -9,4 +10,5 @@ void setUpLocator() {
   locator.registerLazySingleton(() => DynamicLink());
   locator.registerLazySingleton(() => Navigation());
   locator.registerLazySingleton(() => CartDB());
+  locator.registerLazySingleton(() => SelectedVenue());
 }

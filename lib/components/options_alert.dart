@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -39,7 +37,6 @@ DialogMenu(context, name, options) {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
-      bool isValid = false;
 
       if (Platform.isAndroid) {
         return AlertDialog(
@@ -63,13 +60,14 @@ DialogMenu(context, name, options) {
 
       else{
         return CupertinoActionSheet(
-          title: Text('Options'),
-          //content: Text('Content'),
-          actions: alertList);
+            title: Text('Options'),
+            //content: Text('Content'),
+            actions: alertList);
       }
     },
   );
 }
+
 
 /*
 qrDialog(context,routename,qr){

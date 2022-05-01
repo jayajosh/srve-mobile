@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:srve/components/selected_venue_alert.dart';
 import 'package:srve/services/cart.dart';
+import 'package:srve/services/venue_storage.dar.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -50,6 +52,18 @@ class _CartScreen extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
 
+    String? selectedVenue = SelectedVenue().getVenue();
+    int? tableNum = SelectedVenue().getTable();
+
+    if (selectedVenue == null) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) async {
+        await showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => noVenue(context)
+        );
+      });
+    }
+
     // CollectionReference venue = FirebaseFirestore.instance.collection('venues');
 
     return FutureBuilder(
@@ -84,10 +98,10 @@ class _CartScreen extends State<CartScreen> {
                   Divider(),
                   ListTile(
                     contentPadding: EdgeInsets.fromLTRB(
-                        MediaQuery.of(context).size.width*0.1,
-                        0,
-                        MediaQuery.of(context).size.width*0.1,
-                        MediaQuery.of(context).size.height*0.05,),
+                      MediaQuery.of(context).size.width*0.1,
+                      0,
+                      MediaQuery.of(context).size.width*0.1,
+                      MediaQuery.of(context).size.height*0.05,),
                     trailing: OutlinedButton(child: Text('Checkout'),onPressed: (){print('checkout stuff');}), //todo if prod length 0 disable
                     // todo when on edit become add instructions button
                     title: Text('Total Price: £${totalPrice.toStringAsFixed(2)}'),)
