@@ -9,13 +9,17 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:srve/services/venue_storage.dar.dart';
+
+import '../../locator.dart';
 
 //todo implement no location error message
 
 Future <SharedPreferences> _prefs = SharedPreferences.getInstance();
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  Function callback;
+  MapScreen(this.callback);
 
   @override
   _MapScreen createState() => _MapScreen();
@@ -45,7 +49,7 @@ class _MapScreen extends State<MapScreen> {
           )
       )
       );
-}
+    }
     else {
       var pos = await Geolocator.getCurrentPosition();
       mapController.animateCamera(CameraUpdate.newCameraPosition(
@@ -58,16 +62,32 @@ class _MapScreen extends State<MapScreen> {
     }
   }
 
-  addMarker(name,location,info) async{
-      var marker = Marker(
-          markerId: MarkerId(name),
-          position: location,
-          icon: BitmapDescriptor.defaultMarker,
-          infoWindow: InfoWindow(title: '$name (10km)',snippet: info)//todo add distance
-      );
-      markers.add(marker);
+  addMarker(id,name,location,info) async{
+    var marker = Marker(
+        markerId: MarkerId(name),
+        position: location,
+        icon: BitmapDescriptor.defaultMarker,
+        infoWindow: InfoWindow(title: '$name (10km)',snippet: info),//todo add distance
+        onTap: () {
+          final snackBar = SnackBar(
+            content: Text(name),
+            margin: const EdgeInsets.symmetric(horizontal: 75, vertical: 20),
+            behavior: SnackBarBehavior.floating,
+            action: SnackBarAction(
+              label: 'Confirm',
+              onPressed: () {
+                locator<SelectedVenue>().setVenue(id);
+                locator<SelectedVenue>().setTable(null);
+                widget.callback(1);
+                // Some code to undo the change.
+              },
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
+    );
+    markers.add(marker);
 
-      //todo add select venue option
   }
 
   _findMarkers() async {
@@ -87,7 +107,9 @@ class _MapScreen extends State<MapScreen> {
           strictMode: true
       );
     }).listen((List<DocumentSnapshot> documentList) {
-      documentList.forEach((element) {addMarker(element['name'],LatLng(element['position']['geopoint'].latitude,element['position']['geopoint'].longitude),element['info']);});
+      for (var element in documentList) {
+        print(element.id);
+        addMarker(element.id, element['name'],LatLng(element['position']['geopoint'].latitude,element['position']['geopoint'].longitude),element['info']);}
       if (markersUpdated == false) {setState((){markersUpdated = true;});}
     });
 

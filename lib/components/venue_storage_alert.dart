@@ -69,7 +69,7 @@ noTable(context) {
   else{
     return Center(
       child: CupertinoAlertDialog(
-          title: const Text('No Table Selected'),
+          title: const Text('Please enter your table: '),
           content: CupertinoTextField(
             onChanged: (value) {},
             controller: _textFieldController,

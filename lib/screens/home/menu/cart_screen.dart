@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:srve/components/selected_venue_alert.dart';
+import 'package:srve/components/venue_storage_alert.dart';
 import 'package:srve/services/cart.dart';
 import 'package:srve/services/venue_storage.dar.dart';
 
@@ -63,6 +63,14 @@ class _CartScreen extends State<CartScreen> {
       });
     }
 
+    if (locator<SelectedVenue>().getTable() == null) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) async {
+        await showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => noTable(context)
+        );
+      });
+    }
     // CollectionReference venue = FirebaseFirestore.instance.collection('venues');
 
     return FutureBuilder(

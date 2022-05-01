@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:srve/components/selected_venue_alert.dart';
+import 'package:srve/components/venue_storage_alert.dart';
 import 'package:srve/services/venue_storage.dar.dart';
 import '../locator.dart';
 import 'home/map.dart';
@@ -8,20 +8,6 @@ import 'home/more.dart';
 
 class Home extends StatefulWidget {
   Home({int currentIndex = 0});
-
-
-
-  final List<Widget> _page = [
-    MapScreen(),
-    Menu(),
-    Scaffold(),
-    More()
-
-    /*MapWidget(),
-    RouteSearch(),
-    MapWidget(),
-    Scanner()*/
-  ];
 
 /*
   final List<Widget> _appbar = [
@@ -34,10 +20,22 @@ class Home extends StatefulWidget {
 */
 
   _Home createState() => _Home();
+
 }
 
 class _Home extends State<Home>{
   int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void goToMenu() {
+    setState(() {
+      currentIndex = 1;
+    });
+  }
 
   void onTapped(int index) {
     setState(() {
@@ -46,16 +44,24 @@ class _Home extends State<Home>{
     });
   }
 
-  GlobalKey<ScaffoldState> mainScaffold = GlobalKey();
+  final GlobalKey<ScaffoldState> _mainScaffold = GlobalKey();
+  final GlobalKey _bottomNavigationKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
+
+    final List<Widget> pages = [
+      MapScreen(onTapped),
+      Menu(),
+      Scaffold(),
+      More()
+    ];
 
     if (locator<SelectedVenue>().getVenue() == null && currentIndex == 1) {
       WidgetsBinding.instance?.addPostFrameCallback((_) async {
         await showDialog<String>(
             context: context,
-            builder: (BuildContext context) => noTable(context)
+            builder: (BuildContext context) => noVenue(context)
         );
         setState(() {
           //(index==3){qrScan(context); index = currentIndex;} ///------///
@@ -65,15 +71,15 @@ class _Home extends State<Home>{
     }
 
     return Scaffold(
-      key: mainScaffold,
-      body: widget._page[currentIndex],/*Stack( //todo do i need the stack to be indexed
+      key: _mainScaffold,
+      body: IndexedStack(
           index: currentIndex,
-          children: widget._page,
+          children: pages,
         ),
-      ]),*/
 
       bottomNavigationBar: BottomAppBar(
           child: BottomNavigationBar(
+            key: _bottomNavigationKey,
             type: BottomNavigationBarType.fixed,
             items: const [BottomNavigationBarItem(
               icon: Icon(Icons.map),
@@ -99,13 +105,6 @@ class _Home extends State<Home>{
       //floatingActionButton: CenterButton(),
       //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-
   }
 
 }
