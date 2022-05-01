@@ -4,3 +4,5 @@ String getKey(){
   //return "AIzaSyAJmuK8dfcvcmqTqqjDozITI_5bM0AJmvc"; ///Browser
 
 }
+
+//todo Git ignore, update this key and any further keys

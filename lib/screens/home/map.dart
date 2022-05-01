@@ -10,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
+//todo implement no location error message
+
 Future <SharedPreferences> _prefs = SharedPreferences.getInstance();
 
 class MapScreen extends StatefulWidget {

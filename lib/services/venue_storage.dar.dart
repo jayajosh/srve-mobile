@@ -1,0 +1,56 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
+setVenue(String venue) async{
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setString('venue',venue);
+}
+
+setTable(int table) async{
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setInt('table',table);
+}
+
+Future<String?> getVenue() async{
+  final prefs = await SharedPreferences.getInstance();
+  String? venue = prefs.getString('venue');
+  return venue;
+}
+
+Future<int> getTable() async{
+  final prefs = await SharedPreferences.getInstance();
+  int table = prefs.getInt('table') ?? 0;
+  return table;
+}
+
+// Deprecated
+
+/*Future <SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+class VenueNotifier with ChangeNotifier {
+
+  setVenue(String venue) async{
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('venue',venue);
+  }
+
+  setTable(int table) async{
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('table',table);
+  }
+
+  Future<String?> getVenue() async{
+    final prefs = await SharedPreferences.getInstance();
+    String? venue = prefs.getString('venue');
+    return venue;
+  }
+
+  Future<int> getTable() async{
+    final prefs = await SharedPreferences.getInstance();
+    int table = prefs.getInt('table') ?? 0;
+    return table;
+  }
+
+
+}*/
+
+//todo De Class

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 class CartDB {
@@ -6,11 +5,13 @@ class CartDB {
   var database = openDatabase('cart.db', onCreate: (db, version) {
     // Run the CREATE TABLE statement on the database.
     return db.execute(
-      'CREATE TABLE cart(cartPos INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, product TEXT, price DOUBLE, options TEXT)',
+      'CREATE TABLE cart(cartPos INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, product TEXT, price DOUBLE, options TEXT)', 
     );
   },
     version: 1,
   );
+  
+  
   
   createTable() async {
     final db = await database;
