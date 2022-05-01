@@ -66,6 +66,8 @@ class _MapScreen extends State<MapScreen> {
           infoWindow: InfoWindow(title: '$name (10km)',snippet: info)//todo add distance
       );
       markers.add(marker);
+
+      //todo add select venue option
   }
 
   _findMarkers() async {
