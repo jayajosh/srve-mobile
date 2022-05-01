@@ -58,7 +58,7 @@ noTable(context) {
           actions: <Widget>[
             TextButton(
                 child: const Text('Confirm'),
-                onPressed: () {locator<SelectedVenue>().setTable(int.parse(_textFieldController.text));}
+                onPressed: () {locator<SelectedVenue>().setTable(int.parse(_textFieldController.text));Navigator.pop(context);}
               //Navigator.of(context).pop();
             )
           ]
@@ -79,7 +79,7 @@ noTable(context) {
           actions: <Widget>[
             TextButton(
                 child: const Text('Confirm'),
-                onPressed: () {locator<SelectedVenue>().setTable(int.parse(_textFieldController.text));}//todo snack bar table set
+                onPressed: () {locator<SelectedVenue>().setTable(int.parse(_textFieldController.text));Navigator.pop(context);}//todo snack bar table set
               //Navigator.of(context).pop();
             )
           ]
