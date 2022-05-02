@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:srve/services/units.dart';
 import 'package:srve/services/venue_storage.dar.dart';
 
 import '../../locator.dart';
@@ -33,11 +34,20 @@ class _MapScreen extends State<MapScreen> {
   var radius = BehaviorSubject.seeded(100.0);
   late StreamSubscription subscription;
 
-  bool markersUpdated = false;
-  bool isMapCreated = false;
-
   late GoogleMapController mapController;
   Set<Marker> markers = {};
+
+  getDistance(venueLat,venueLng,userLat,userLng) async {
+    double distanceM = await Geolocator.distanceBetween(
+      venueLat,
+      venueLng,
+      userLat,
+      userLng,
+    );
+    var miles = await Units().getUnits();
+    if (miles == false) {return '(' + (distanceM / 1000).toStringAsFixed(2) + 'km)';}
+    else {return '(' + (distanceM * 0.000621).toStringAsFixed(2) + ' miles)';}
+  }
 
   _animateToUser() async {
     var status = await Permission.locationWhenInUse.request();
@@ -63,11 +73,12 @@ class _MapScreen extends State<MapScreen> {
   }
 
   addMarker(id,name,location,info) async{
+    var pos = await Geolocator.getCurrentPosition();
     var marker = Marker(
         markerId: MarkerId(name),
         position: location,
         icon: BitmapDescriptor.defaultMarker,
-        infoWindow: InfoWindow(title: '$name (10km)',snippet: info),//todo add distance
+        infoWindow: InfoWindow(title: '$name ${await getDistance(location.latitude,location.longitude,pos.latitude, pos.longitude)}',snippet: info),//todo add distance
         onTap: () {
           final snackBar = SnackBar(
             content: Text(name),
@@ -106,11 +117,13 @@ class _MapScreen extends State<MapScreen> {
           field: 'position',
           strictMode: true
       );
-    }).listen((List<DocumentSnapshot> documentList) {
+    }).listen((List<DocumentSnapshot> documentList) async {
+      markers.clear();
       for (var element in documentList) {
-        print(element.id);
-        addMarker(element.id, element['name'],LatLng(element['position']['geopoint'].latitude,element['position']['geopoint'].longitude),element['info']);}
-      if (markersUpdated == false) {setState((){markersUpdated = true;});}
+        await addMarker(element.id, element['name'],LatLng(element['position']['geopoint'].latitude,element['position']['geopoint'].longitude),element['info']);}
+      //if (markersUpdated == false) {setState((){markersUpdated = true;});}
+      if (mounted) setState((){});
+      subscription.cancel();
     });
 
   }
@@ -152,12 +165,6 @@ class _MapScreen extends State<MapScreen> {
 
     void _onMapCreated(GoogleMapController controller) {
       mapController = controller;
-      isMapCreated = true;
-      changeMapMode();
-      _animateToUser();
-    }
-
-    if (isMapCreated) {
       changeMapMode();
       _animateToUser();
     }
@@ -182,8 +189,23 @@ class _MapScreen extends State<MapScreen> {
   dispose() {
     markers.clear();
     subscription.cancel();
-    markersUpdated = false;
     super.dispose();
+  }
+
+  /*@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    markers.clear();
+    _findMarkers();
+    print('init');
+  }*/
+
+  @override
+  void didUpdateWidget(covariant MapScreen oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
+    _findMarkers();
   }
 
   @override

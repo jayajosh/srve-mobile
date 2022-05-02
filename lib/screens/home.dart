@@ -41,6 +41,7 @@ class _Home extends State<Home>{
     setState(() {
       //(index==3){qrScan(context); index = currentIndex;} ///------///
       currentIndex = index;
+
     });
   }
 
@@ -53,7 +54,7 @@ class _Home extends State<Home>{
     final List<Widget> pages = [
       MapScreen(onTapped),
       Menu(),
-      Scaffold(),
+      //Scaffold(),
       More()
     ];
 
@@ -66,6 +67,17 @@ class _Home extends State<Home>{
         setState(() {
           //(index==3){qrScan(context); index = currentIndex;} ///------///
           currentIndex = 0;
+        });
+      });
+    }
+
+    else if (locator<SelectedVenue>().getTable() == null && currentIndex == 1) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) async {
+        await showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => noTable(context)
+        );
+        setState(() {
         });
       });
     }
@@ -89,10 +101,10 @@ class _Home extends State<Home>{
                 icon: Icon(Icons.menu_book),
                 label: 'Menu',
               ),
-              BottomNavigationBarItem(
+/*              BottomNavigationBarItem(
                 icon: Icon(Icons.qr_code_scanner),
                 label: 'QR Scanner',
-              ),
+              ),*/
               BottomNavigationBarItem(
                 icon: Icon(Icons.more_horiz),
                 label: 'More',

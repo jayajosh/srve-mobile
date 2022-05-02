@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:srve/services/themes.dart';
+import 'package:srve/services/units.dart';
 import 'package:srve/services/url_launcher.dart';
 
 class More extends StatefulWidget {
@@ -12,7 +13,7 @@ class More extends StatefulWidget {
 
 class _More extends State<More> {
 
-  List<bool> isSelected = [true, false];
+  List<bool> isSelected = [true, false]; //todo match shared prefs
   List<bool> isSelected2 = [true, false, false];
 
   Widget ItemSetup(IconData icon, String text, GestureTapCallback onTap) {
@@ -33,9 +34,9 @@ class _More extends State<More> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
+
     final themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
     return Scaffold(
         appBar: AppBar(title: const Text("SRVE")),
@@ -45,8 +46,8 @@ class _More extends State<More> {
         body: ListView(
                     children: [
                       const Divider(color: Colors.transparent),
-                      ItemSetup(Icons.account_circle,"Profile",(){Navigator.pushNamed(context, 'Home/Profile');}),
-                      Divider(indent: MediaQuery.of(context).size.width*0.05, endIndent: MediaQuery.of(context).size.width*0.05),
+                      /*ItemSetup(Icons.account_circle,"Profile",(){Navigator.pushNamed(context, 'Home/Profile');}),
+                      Divider(indent: MediaQuery.of(context).size.width*0.05, endIndent: MediaQuery.of(context).size.width*0.05),*/ //todo decide on profiles??
                       ItemSetup(Icons.history,"Order History",(){}),
                       Divider(indent: MediaQuery.of(context).size.width*0.05, endIndent: MediaQuery.of(context).size.width*0.05),
                       ItemSetup(Icons.bug_report,"Report A Bug",(){reportBug();}),
@@ -65,6 +66,8 @@ class _More extends State<More> {
                                     isSelected[buttonIndex] = false;
                                   }
                                 }
+                                if (isSelected[1] == true) {setState(() {Units().setUnits(false);});}
+                                else {setState(() {Units().setUnits(true);});}
                               });
                             },
                             constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width / 5, minHeight: 50), /// Sets minimum dimensions for the buttons, dynamically scales based on device size

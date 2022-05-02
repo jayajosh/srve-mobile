@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:srve/components/venue_storage_alert.dart';
 import 'package:srve/services/venue_storage.dar.dart';
 
 import '../../locator.dart';
@@ -31,7 +30,7 @@ class _Menu extends State<Menu> {
   @override
   Widget build(BuildContext context) {
 
-    if (locator<SelectedVenue>().getTable() == null) {
+    /*if (locator<SelectedVenue>().getTable() == null) {
       WidgetsBinding.instance?.addPostFrameCallback((_) async {
         await showDialog<String>(
             context: context,
@@ -39,7 +38,7 @@ class _Menu extends State<Menu> {
         );
         setState(() {});
       });
-    }
+    }*/
 
     CollectionReference venues = FirebaseFirestore.instance.collection('venues');
 
