@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:srve/screens/home/more/history_screen.dart';
+import 'package:srve/screens/home/more/order_screen.dart';
 import '/locator.dart';
 import 'screens/home.dart';
 import 'screens/home/menu/cart_screen.dart';
@@ -7,6 +10,7 @@ import 'screens/home/menu/drinks.dart';
 import 'screens/home/menu/food.dart';
 import 'screens/home/menu/submenu.dart';
 import 'screens/home/more/profile.dart';
+import 'services/cart.dart';
 import 'services/navigation.dart';
 import 'services/dynamic_link.dart';
 import 'services/themes.dart';
@@ -20,6 +24,9 @@ main() {
   setUpLocator();
 
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]); //todo decide whether to keep
+  locator<CartDB>().clearCart();
   return runApp(ChangeNotifierProvider<ThemeNotifier>(create: (_) => ThemeNotifier(),child: Main()));
 
 }
@@ -79,6 +86,8 @@ class _Main extends State<Main> with WidgetsBindingObserver{
             '/Home': (context) => Home(),
             '/Splash': (context) => Splash(),
             'Home/Profile': (context) => Profile(),
+            'Home/HistoryScreen': (context) => HistoryScreen(),
+            'Home/HistoryScreen/OrderScreen': (context) => OrderScreen(),
             'Home/Food': (context) => Food(),
             'Home/Drinks': (context) => Drinks(),
             'Home/Food/Submenu': (context) => Submenu(),

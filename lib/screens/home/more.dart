@@ -48,7 +48,7 @@ class _More extends State<More> {
                       const Divider(color: Colors.transparent),
                       /*ItemSetup(Icons.account_circle,"Profile",(){Navigator.pushNamed(context, 'Home/Profile');}),
                       Divider(indent: MediaQuery.of(context).size.width*0.05, endIndent: MediaQuery.of(context).size.width*0.05),*/ //todo decide on profiles??
-                      ItemSetup(Icons.history,"Order History",(){}),
+                      ItemSetup(Icons.history,"Order History",(){Navigator.pushNamed(context, 'Home/HistoryScreen');}),
                       Divider(indent: MediaQuery.of(context).size.width*0.05, endIndent: MediaQuery.of(context).size.width*0.05),
                       ItemSetup(Icons.bug_report,"Report A Bug",(){reportBug();}),
                       Divider(indent: MediaQuery.of(context).size.width*0.05, endIndent: MediaQuery.of(context).size.width*0.05),

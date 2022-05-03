@@ -36,7 +36,6 @@ class OrderHistoryDB {
     createTables();
     await orders.insert('orders',{'orderId':orderId,'date':date.toString(),'venue':venue, 'tableNum':table});
     products.forEach((element) {addDetails(orderId, element['product'], element['price'], element['options']);});
-    readFromCart();
   }
 
   addDetails(String orderId, String name,double price, String? options) async {
@@ -44,10 +43,16 @@ class OrderHistoryDB {
     await details.insert('details',{'orderId':orderId,'product':name,'price':price, 'options':options});
   }
 
-  readFromCart() async {
+  readOrders() async {
+    final db = await ordersDB;
+    final List<Map<String, dynamic>> orderMaps = await db.query('orders');
+    return orderMaps;
+  }
+
+  readDetails(id) async {
     final db = await detailsDB;
-    final List<Map<String, dynamic>> cartMaps = await db.query('details');
-    print(cartMaps);
+    final List<Map<String, dynamic>> detailMaps = await db.rawQuery('SELECT * FROM details WHERE orderId = ?',[id]);
+    return detailMaps;
   }
 
   /*

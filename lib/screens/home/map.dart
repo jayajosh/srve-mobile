@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:srve/services/cart.dart';
 import 'package:srve/services/units.dart';
 import 'package:srve/services/venue_storage.dar.dart';
 
@@ -87,6 +88,7 @@ class _MapScreen extends State<MapScreen> {
             action: SnackBarAction(
               label: 'Confirm',
               onPressed: () {
+                locator<CartDB>().clearCart();
                 locator<SelectedVenue>().setVenue(id);
                 locator<SelectedVenue>().setTable(null);
                 widget.callback(1);
