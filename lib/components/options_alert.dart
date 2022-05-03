@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:srve/services/cart.dart';
 
+import '../locator.dart';
+
 replace(String s){
   s = s.replaceAll(RegExp('[0-9]'),'');
   s = s.replaceAll(RegExp('_'), ' ');
@@ -24,7 +26,7 @@ DialogMenu(context, name, options) {
       onPressed: () {
         //todo deal with null price values
         //todo ordering of list
-        CartDB().addToCart(name,options.values.elementAt(index).toDouble(),replace(options.keys.elementAt(index))); //todo push as order
+        locator<CartDB>().addToCart(name,options.values.elementAt(index).toDouble(),replace(options.keys.elementAt(index))); //todo push as order
         Navigator.of(context).pop();
       }));
 

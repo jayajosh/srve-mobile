@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:srve/components/venue_storage_alert.dart';
 import 'package:srve/services/cart.dart';
+import 'package:srve/services/order_history.dart';
 import 'package:srve/services/venue_storage.dar.dart';
 
 import '../../../locator.dart';
@@ -15,7 +16,8 @@ class CartScreen extends StatefulWidget {
 class _CartScreen extends State<CartScreen> {
 
   //FirebaseFirestore firestore = FirebaseFirestore.instance;
-
+  //final orderId = Uuid().v1();
+  final orderId = DateTime.now().toString(); //todo fix orderID
   bool editMode = false;
 
   changeEditMode(){
@@ -73,8 +75,12 @@ class _CartScreen extends State<CartScreen> {
     }
     // CollectionReference venue = FirebaseFirestore.instance.collection('venues');
 
+    addToHistory(DateTime date, List products){
+      locator<OrderHistoryDB>().addOrder(orderId, date, locator<SelectedVenue>().getVenue()!, locator<SelectedVenue>().getTable()!, products);
+    }
+
     return FutureBuilder(
-      future: CartDB().readFromCart(),
+      future: locator<CartDB>().readFromCart(),
       builder:
           (BuildContext context, AsyncSnapshot snapshot) {
 
@@ -109,7 +115,7 @@ class _CartScreen extends State<CartScreen> {
                       0,
                       MediaQuery.of(context).size.width*0.1,
                       MediaQuery.of(context).size.height*0.05,),
-                    trailing: OutlinedButton(child: Text('Checkout'),onPressed: (){print('checkout stuff');}), //todo if prod length 0 disable
+                    trailing: OutlinedButton(child: Text('Checkout'),onPressed: (){addToHistory(DateTime.now(), Products);}), //todo if prod length 0 disable //todo add checkout options that lead into add history
                     // todo when on edit become add instructions button
                     title: Text('Total Price: £${totalPrice.toStringAsFixed(2)}'),)
                 ],

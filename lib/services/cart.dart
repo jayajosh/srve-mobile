@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
 class CartDB {
-
+  //todo de locator
   var database = openDatabase('cart.db', onCreate: (db, version) {
     // Run the CREATE TABLE statement on the database.
     return db.execute(
@@ -23,8 +23,9 @@ class CartDB {
   addToCart(String name,double price, String? options) async {
     final db = await database;
     createTable();
-    print(await db.insert('cart',{'product':name,'price':price, 'options':options}));
+    await db.insert('cart',{'product':name,'price':price, 'options':options});
   }
+
   readFromCart() async {
     final db = await database;
     final List<Map<String, dynamic>> cartMaps = await db.query('cart');
@@ -41,6 +42,11 @@ class CartDB {
       whereArgs: [cartPos],
     );
   }
+  
+  clearCart() async {
+    final db = await database;
+    db.execute('DROP TABLE IF EXISTS cart');
+    createTable();
+  }
+  
 }
-
-//todo display the cart on cart page with remove options

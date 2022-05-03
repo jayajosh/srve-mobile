@@ -1,9 +1,8 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:srve/services/themes.dart';
-import 'package:srve/services/url_launcher.dart';
+import 'package:srve/services/venue_storage.dar.dart';
+
+import '../../../locator.dart';
 
 class Drinks extends StatefulWidget {
   const Drinks({Key? key}) : super(key: key);
@@ -46,12 +45,11 @@ class _Drinks extends State<Drinks> {
 
   @override
   Widget build(BuildContext context) {
-    final themeNotifier = Provider.of<ThemeNotifier>(context, listen: false);
 
     CollectionReference venue = FirebaseFirestore.instance.collection('venues');
 
     return FutureBuilder<DocumentSnapshot>(
-      future: venue.doc('uqgGPJ4RBUXtOHgKkmYg').get(),
+      future: venue.doc(locator<SelectedVenue>().getVenue()).get(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
 
@@ -64,7 +62,7 @@ class _Drinks extends State<Drinks> {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
+          // Deprecated Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
               appBar: AppBar(
                   title: Text("Drinks"),
@@ -148,13 +146,4 @@ class _Drinks extends State<Drinks> {
     );*/
     //body:
   }
-}
-
-//Widget
-darkModeOptions() {
-  return [
-    PopupMenuItem(value: "system",child: Row(children: const [Padding(padding: EdgeInsets.only(right:10.0), child: Icon(Icons.autorenew)),Text("System")])),
-    PopupMenuItem(value: "dark",child: Row(children: const [Padding(padding: EdgeInsets.only(right:10.0), child: Icon(Icons.nightlight_round)),Text("Dark Mode")])),
-    PopupMenuItem(value: "light",child: Row(children: const [Padding(padding: EdgeInsets.only(right:10.0), child: Icon(Icons.wb_sunny)),Text("Light Mode")]))
-  ];
 }
